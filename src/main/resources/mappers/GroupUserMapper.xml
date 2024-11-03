@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.group.repository.GroupUserMapper">
+
+    <resultMap id="GroupWithCreatorResult" type="com.enjoytrip.group.domain.Group">
+        <id property="groupId" column="group_id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="maxParticipant" column="max_participants"/>
+        <association property="creator" javaType="com.enjoytrip.user.domain.User">
+            <id property="userId" column="creator_id"/>
+            <result property="nickname" column="creator_name"/>
+            <result property="email" column="creator_email"/>
+            <result property="avatarUrl" column="creator_url"/>
+        </association>
+    </resultMap>
+
+    <insert id="insertGroupUser" parameterType="com.enjoytrip.group.domain.GroupUser">
+        INSERT INTO group_user (user_id, group_id)
+        VALUES (#{userId}, #{groupId})
+    </insert>
+
+    <!-- 특정 사용자가 가입한 모든 그룹 목록 조회 -->
+    <select id="findGroupsByUserId" parameterType="Long" resultMap="GroupWithCreatorResult">
+        SELECT g.group_id, g.title, g.description, g.creator_id, g.created_at, g.max_participants,
+               u.user_id AS creator_id, u.nickname AS creator_name, u.email AS creator_email, u.avatar_url AS creator_url
+        FROM `groups` g
+                 INNER JOIN `group_user` gu ON g.group_id = gu.group_id
+                 INNER JOIN `user` u ON g.creator_id = u.user_id
+        WHERE gu.user_id = #{userId}
+    </select>
+
+    <!-- 특정 그룹에 참여한 모든 사용자 정보 조회 -->
+    <select id="selectUsersInGroup" parameterType="Long" resultType="com.enjoytrip.user.domain.User">
+        SELECT u.user_id, u.nickname, u.email, u.avatar_url
+        FROM `user` u
+                 INNER JOIN `group_user` gu ON u.user_id = gu.user_id
+        WHERE gu.group_id = #{groupId}
+    </select>
+
+    <!-- 특정 그룹에 참여한 사용자 수 조회 -->
+    <select id="countUsersInGroup" parameterType="Long" resultType="int">
+        SELECT COUNT(*)
+        FROM `group_user`
+        WHERE group_id = #{groupId}
+    </select>
+
+</mapper>
