@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.attraction.repository.AttractionMapper">
+
+    <insert id="insertAttraction" parameterType="com.enjoytrip.attraction.domain.Attraction">
+        INSERT INTO `attractions` (title, content_id, first_image, map_x, map_y, address)
+        VALUES (#{title}, #{contentId}, #{firstImage}, #{mapX}, #{mapY}, #{address});
+        <selectKey resultType="Long" keyProperty="attractionId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findAttractionIdByContentId" parameterType="String" resultType="Long">
+        SELECT attraction_id
+        FROM attractions
+        WHERE content_id = #{contentId}
+    </select>
+
+    <select id="findTopNth" parameterType="int" resultType="com.enjoytrip.attraction.domain.TopNthAttraction">
+        SELECT a.attraction_id, ROW_NUMBER() OVER (ORDER BY COUNT(au.attraction_user_id) DESC) AS `rank`,
+               COUNT(au.attraction_user_id) AS count, a.title, a.first_image, a.map_x, a.map_y, a.address
+        FROM attractions a
+        JOIN attraction_user au
+        ON a.attraction_id = au.attraction_id
+        GROUP BY a.attraction_id
+        ORDER BY count DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>
