@@ -26,7 +26,7 @@ public class ChatMessageProducer {
             System.out.println("Publishing to Kafka: " + messageJson);
             String key = "chatroom:" + message.getChatRoomId();
 
-            kafkaTemplate.send("chat-topic", key, messageJson);
+            kafkaTemplate.send("chatting-topic", key, messageJson);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
