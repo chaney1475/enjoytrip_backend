@@ -41,6 +41,10 @@ public class ChatController {
         message.setChatRoomId(roomNumber);
         // 로그 추가
         System.out.println("Received WebSocket message: " + message);
+
+        // 데이터베이스 저장
+        chatMessageService.saveAsync(ChatMessage.from(message));
+
         // 메시지 발행
         chatMessageProducer.sendMessage(message);
     }

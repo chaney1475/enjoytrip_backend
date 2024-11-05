@@ -31,9 +31,6 @@ public class ChatMessageListener {
             // 변환된 메시지 로그 추가
             System.out.println("Parsed ChatMessageDTO: " + chatMessage);
 
-            // 데이터베이스 저장
-            chatMessageService.save(ChatMessage.from(chatMessage));
-
             // WebSocket 구독 경로로 전송
             messagingTemplate.convertAndSend("/api/sub/chat/" + roomId, chatMessage);
 
