@@ -11,12 +11,14 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ import java.security.Principal;
 public class ChatController {
     private final JwtUtil jwtUtil;
     private final SimpMessagingTemplate messagingTemplate;
+    private final ChatMessageService chatMessageService;
     private final ChatMessageProducer chatMessageProducer;
 
     // 채팅을 웹소켓으로 받아서 Kafka에 발행
@@ -40,6 +43,19 @@ public class ChatController {
         System.out.println("Received WebSocket message: " + message);
         // 메시지 발행
         chatMessageProducer.sendMessage(message);
+    }
+
+    @GetMapping("/messages")
+    public List<ChatMessage> getRecentMessages(
+            @RequestParam Long chatRoomId,
+            @RequestParam(required = false) Date beforeTimestamp) {
+
+        // beforeTimestamp가 없는 경우 현재 시간을 기준으로 설정
+        if (beforeTimestamp == null) {
+            beforeTimestamp = new Date();
+        }
+
+        return chatMessageService.getRecentMessages(chatRoomId, beforeTimestamp);
     }
 }
 
