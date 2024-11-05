@@ -2,6 +2,8 @@ package com.enjoytrip.chatting.config;
 
 import com.enjoytrip.chatting.domain.ChatMessage;
 import com.enjoytrip.chatting.dto.ChatMessageDTO;
+import com.enjoytrip.chatting.repository.ChatMessageRepository;
+import com.enjoytrip.chatting.service.ChatMessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class ChatMessageListener {
 
     private final SimpMessagingTemplate messagingTemplate;
+    private final ChatMessageService chatMessageService;
     private final ObjectMapper objectMapper;
 
     @KafkaListener(topics = "chatting-topic", groupId = "chat-group")
@@ -27,6 +30,9 @@ public class ChatMessageListener {
 
             // 변환된 메시지 로그 추가
             System.out.println("Parsed ChatMessageDTO: " + chatMessage);
+
+            // 데이터베이스 저장
+            chatMessageService.save(ChatMessage.from(chatMessage));
 
             // WebSocket 구독 경로로 전송
             messagingTemplate.convertAndSend("/api/sub/chat/" + roomId, chatMessage);

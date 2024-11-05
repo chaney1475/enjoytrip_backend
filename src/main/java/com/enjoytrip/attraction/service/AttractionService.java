@@ -2,8 +2,8 @@ package com.enjoytrip.attraction.service;
 
 import com.enjoytrip.attraction.domain.Attraction;
 import com.enjoytrip.attraction.exception.AttractionException;
-import com.enjoytrip.attraction.repository.AttractionMapper;
-import com.enjoytrip.attraction.repository.AttractionUserMapper;
+import com.enjoytrip.attraction.mapper.AttractionMapper;
+import com.enjoytrip.attraction.mapper.AttractionUserMapper;
 import com.enjoytrip.attraction.service.command.AttractionCreateCommand;
 import com.enjoytrip.attraction.service.dto.AttractionDto;
 import com.enjoytrip.attraction.service.dto.TopNthAttractionDto;

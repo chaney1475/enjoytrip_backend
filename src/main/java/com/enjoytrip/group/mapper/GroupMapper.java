@@ -1,8 +1,7 @@
-package com.enjoytrip.group.repository;
+package com.enjoytrip.group.mapper;
 
 import com.enjoytrip.group.domain.Group;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;

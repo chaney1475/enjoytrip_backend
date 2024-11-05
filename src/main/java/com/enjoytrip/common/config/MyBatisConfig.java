@@ -5,7 +5,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.enjoytrip.*.repository")
+@MapperScan(basePackages = "com.enjoytrip.*.mapper")
 public class MyBatisConfig {
-    // MyBatis 관련 설정
 }

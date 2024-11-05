@@ -1,8 +1,10 @@
 package com.enjoytrip.chatting.controller;
 
 import com.enjoytrip.chatting.config.ChatUserPrincipal;
+import com.enjoytrip.chatting.domain.ChatMessage;
 import com.enjoytrip.chatting.dto.ChatMessageDTO;
 import com.enjoytrip.chatting.producer.ChatMessageProducer;
+import com.enjoytrip.chatting.service.ChatMessageService;
 import com.enjoytrip.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -21,7 +23,6 @@ import java.security.Principal;
 @RequestMapping("/api")
 public class ChatController {
     private final JwtUtil jwtUtil;
-//    private final ChatService chatService;
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageProducer chatMessageProducer;
 

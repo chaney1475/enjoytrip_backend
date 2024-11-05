@@ -1,4 +1,4 @@
-package com.enjoytrip.group.repository;
+package com.enjoytrip.group.mapper;
 
 import com.enjoytrip.group.domain.Group;
 import com.enjoytrip.user.domain.User;

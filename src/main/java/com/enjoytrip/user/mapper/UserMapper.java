@@ -1,4 +1,4 @@
-package com.enjoytrip.user.repository;
+package com.enjoytrip.user.mapper;
 
 import com.enjoytrip.user.domain.User;
 import org.apache.ibatis.annotations.Mapper;

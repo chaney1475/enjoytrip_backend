@@ -3,11 +3,11 @@ package com.enjoytrip.user.service;
 import com.enjoytrip.common.exception.ExceptionCode;
 import com.enjoytrip.common.exception.NotFoundException;
 import com.enjoytrip.image.domain.Image;
-import com.enjoytrip.image.repository.ImageMapper;
+import com.enjoytrip.image.mapper.ImageMapper;
 import com.enjoytrip.jwt.exception.TokenException;
 import com.enjoytrip.social.domain.SocialType;
 import com.enjoytrip.user.domain.User;
-import com.enjoytrip.user.repository.UserMapper;
+import com.enjoytrip.user.mapper.UserMapper;
 
 import com.enjoytrip.user.service.command.RegisterCommand;
 import com.enjoytrip.user.service.command.UserUpdateCommand;
