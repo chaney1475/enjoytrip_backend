@@ -4,6 +4,7 @@ import com.enjoytrip.chatting.domain.ChatMessage;
 import com.enjoytrip.chatting.repository.ChatMessageRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,7 +16,8 @@ public class ChatMessageService {
 
     private final ChatMessageRepository repository;
 
-    public ChatMessage save(ChatMessage chatMessage) {
+    @Async
+    public ChatMessage saveAsync(ChatMessage chatMessage) {
         return repository.save(chatMessage);
     }
 
