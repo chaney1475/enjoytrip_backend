@@ -1,4 +1,4 @@
-package com.enjoytrip.image.repository;
+package com.enjoytrip.image.mapper;
 
 import com.enjoytrip.image.domain.Image;
 import org.apache.ibatis.annotations.*;

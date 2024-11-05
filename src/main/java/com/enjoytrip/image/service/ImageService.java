@@ -4,7 +4,7 @@ import com.enjoytrip.common.exception.ExceptionCode;
 import com.enjoytrip.image.domain.Image;
 import com.enjoytrip.image.domain.ImageFile;
 import com.enjoytrip.image.exception.ImageException;
-import com.enjoytrip.image.repository.ImageMapper;
+import com.enjoytrip.image.mapper.ImageMapper;
 import com.enjoytrip.image.service.dto.ImageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

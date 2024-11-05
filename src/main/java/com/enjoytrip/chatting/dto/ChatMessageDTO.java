@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @NoArgsConstructor
 @Getter
@@ -19,7 +19,7 @@ public class ChatMessageDTO {
     // 내용
     private String content;
     // 전송 시간
-    private LocalDateTime timestamp;
+    private Date timestamp;
     // 닉네임
     private String nickname;
     // 프로필 사진 URL

@@ -2,8 +2,8 @@ package com.enjoytrip.group.service;
 
 import com.enjoytrip.group.exception.GroupException;
 import com.enjoytrip.group.domain.Group;
-import com.enjoytrip.group.repository.GroupMapper;
-import com.enjoytrip.group.repository.GroupUserMapper;
+import com.enjoytrip.group.mapper.GroupMapper;
+import com.enjoytrip.group.mapper.GroupUserMapper;
 import com.enjoytrip.group.service.command.GroupCreateCommand;
 import com.enjoytrip.group.service.command.UserJoinGroupCommand;
 import com.enjoytrip.group.service.dto.GroupDTO;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

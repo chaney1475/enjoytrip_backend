@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.enjoytrip.attraction.repository.AttractionMapper">
+<mapper namespace="com.enjoytrip.attraction.mapper.AttractionMapper">
 
     <insert id="insertAttraction" parameterType="com.enjoytrip.attraction.domain.Attraction">
         INSERT INTO `attractions` (title, content_id, first_image, map_x, map_y, address)
