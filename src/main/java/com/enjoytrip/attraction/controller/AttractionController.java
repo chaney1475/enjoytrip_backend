@@ -8,6 +8,7 @@ import com.enjoytrip.attraction.service.command.AttractionCreateCommand;
 import com.enjoytrip.auth.annotation.Authenticated;
 import com.enjoytrip.auth.annotation.LoginRequired;
 import com.enjoytrip.auth.domain.AuthClaims;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class AttractionController {
 
     @LoginRequired
     @PostMapping
-    public ResponseEntity<AttractionResponse> createAttraction(@Authenticated AuthClaims claims, @RequestBody AttractionCreateRequest attractionRequest) {
+    public ResponseEntity<AttractionResponse> createAttraction(@Parameter(hidden = true) @Authenticated AuthClaims claims, @RequestBody AttractionCreateRequest attractionRequest) {
 
         AttractionResponse attractionResponse = AttractionResponse.from(
                 attractionService.insertAttraction(AttractionCreateCommand.from(claims.getUserId(), attractionRequest))
@@ -35,7 +36,7 @@ public class AttractionController {
 
     @LoginRequired
     @GetMapping
-    public ResponseEntity<List<AttractionResponse>> getUserAttractions(@Authenticated AuthClaims claims) {
+    public ResponseEntity<List<AttractionResponse>> getUserAttractions(@Parameter(hidden = true)@Authenticated AuthClaims claims) {
 
         List<AttractionResponse> attractionResponses =
                 attractionService.getUserAttractions(claims.getUserId())
@@ -46,7 +47,7 @@ public class AttractionController {
 
     @LoginRequired
     @DeleteMapping("/{attractionId}")
-    public ResponseEntity<String> deleteUserAttraction(@PathVariable Long attractionId, @Authenticated AuthClaims claims) {
+    public ResponseEntity<String> deleteUserAttraction(@Parameter(hidden = true)@Authenticated AuthClaims claims, @PathVariable Long attractionId) {
 
         attractionService.deleteUserAttraction(attractionId, claims.getUserId());
 

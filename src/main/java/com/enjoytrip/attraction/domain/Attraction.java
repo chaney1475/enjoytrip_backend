@@ -3,6 +3,8 @@ package com.enjoytrip.attraction.domain;
 import com.enjoytrip.attraction.service.command.AttractionCreateCommand;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Builder
@@ -10,22 +12,26 @@ import lombok.*;
 @AllArgsConstructor
 public class Attraction {
     private Long attractionId;
-    private String title;
+    private String address;
     private String contentId;
     private String firstImage;
-    private String mapX;
-    private String mapY;
-    private String address;
+    private BigDecimal mapX;
+    private BigDecimal mapY;
+    private String tel;
+    private String title;
+    private String sigunguName;
 
     static public Attraction from(AttractionCreateCommand command) {
         return new Attraction(
                 null,
-                command.getTitle(),
+                command.getAddress(),
                 command.getContentId(),
                 command.getFirstImage(),
                 command.getMapX(),
                 command.getMapY(),
-                command.getAddress()
+                command.getTel(),
+                command.getTitle(),
+                null
         );
     }
 }
