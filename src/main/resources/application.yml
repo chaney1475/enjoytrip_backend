@@ -15,7 +15,14 @@ spring:
     consumer:
       group-id: chat-group
       auto-offset-reset: earliest
-
+  # spring ai 설정
+  ai:
+    openai:
+      api-key: sk-proj-qSWEo2OZjZ8l5Jja6vCNT3BlbkFJpDTLHvHATkC2s2d2kyZD
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.7
   profiles:
     include: oauth
 
@@ -36,7 +43,6 @@ springdoc:
 jwt:
   secret: ${JWT_SECRET_KEY}
   token-validity-in-seconds: 1209600
-
 
 cloud:
   aws:
