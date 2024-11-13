@@ -9,25 +9,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class TopNthAttractionDto {
-    private Long attractionId;
-    private Integer rank;
+    private Integer ranking;
+    private String sigunguName;
     private Long count;
-    private String title;
-    private String firstImage;
-    private String mapX;
-    private String mapY;
-    private String address;
 
     public static TopNthAttractionDto from(TopNthAttraction topNthAttraction) {
         return new TopNthAttractionDto(
-                topNthAttraction.getAttractionId(),
-                topNthAttraction.getRank(),
-                topNthAttraction.getCount(),
-                topNthAttraction.getTitle(),
-                topNthAttraction.getFirstImage(),
-                topNthAttraction.getMapX(),
-                topNthAttraction.getMapY(),
-                topNthAttraction.getAddress()
+                topNthAttraction.getRanking(),
+                topNthAttraction.getSigunguName(),
+                topNthAttraction.getCount()
         );
     }
 }
