@@ -5,8 +5,8 @@
 <mapper namespace="com.enjoytrip.attraction.mapper.AttractionMapper">
 
     <insert id="insertAttraction" parameterType="com.enjoytrip.attraction.domain.Attraction">
-        INSERT INTO `attractions` (title, content_id, first_image, map_x, map_y, address)
-        VALUES (#{title}, #{contentId}, #{firstImage}, #{mapX}, #{mapY}, #{address});
+        INSERT INTO attractions (address, content_id, first_image, map_x, map_y, tel, title, sigungu_name)
+        VALUES (#{address}, #{contentId}, #{firstImage}, #{mapX}, #{mapY}, #{tel}, #{title}, #{sigunguName})
         <selectKey resultType="Long" keyProperty="attractionId" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -16,17 +16,6 @@
         SELECT attraction_id
         FROM attractions
         WHERE content_id = #{contentId}
-    </select>
-
-    <select id="findTopNth" parameterType="int" resultType="com.enjoytrip.attraction.domain.TopNthAttraction">
-        SELECT a.attraction_id, ROW_NUMBER() OVER (ORDER BY COUNT(au.attraction_user_id) DESC) AS `rank`,
-               COUNT(au.attraction_user_id) AS count, a.title, a.first_image, a.map_x, a.map_y, a.address
-        FROM attractions a
-        JOIN attraction_user au
-        ON a.attraction_id = au.attraction_id
-        GROUP BY a.attraction_id
-        ORDER BY count DESC
-        LIMIT #{limit}
     </select>
 
 </mapper>

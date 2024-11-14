@@ -8,12 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class TopNthAttraction {
-    private Long attractionId;
-    private Integer rank;
+    private Integer ranking;
+    private String sigunguName;
     private Long count;
-    private String title;
-    private String firstImage;
-    private String mapX;
-    private String mapY;
-    private String address;
 }

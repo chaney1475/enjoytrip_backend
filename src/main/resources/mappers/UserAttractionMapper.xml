@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoytrip.attraction.mapper.UserAttractionMapper">
+
+    <insert id="createUserAttraction">
+        INSERT INTO user_attraction (attraction_id, user_id, sigungu_name, created_at)
+        VALUES (#{attraction.attractionId}, #{userId}, #{attraction.sigunguName}, NOW())
+    </insert>
+
+    <select id="findByUserIdAndAttractionId" parameterType="map" resultType="com.enjoytrip.attraction.domain.UserAttraction">
+        SELECT user_attraction_id, user_id, attraction_id, sigungu_name, created_at
+        FROM user_attraction
+        WHERE user_id = #{userId}
+        AND attraction_id = #{attractionId}
+    </select>
+
+    <select id="findByUserId" parameterType="Long" resultType="com.enjoytrip.attraction.domain.Attraction">
+        SELECT a.attraction_id, a.address, a.content_id, a.first_image, a.map_x, a.map_y, a.tel, a.title, a.sigungu_name
+        FROM attractions a
+        INNER JOIN user_attraction ua
+            ON a.attraction_id = ua.attraction_id
+        WHERE ua.user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserIdAndAttractionId" parameterType="map">
+        DELETE
+        FROM user_attraction
+        WHERE user_id = #{userId}
+        AND attraction_id = #{attractionId}
+    </delete>
+
+    <select id="findTopNth" parameterType="Int" resultType="com.enjoytrip.attraction.domain.TopNthAttraction">
+        SELECT ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) AS ranking, sigungu_name, COUNT(*) AS count
+        FROM user_attraction
+        GROUP BY sigungu_name
+        ORDER BY count DESC
+        LIMIT #{TOP_N}
+    </select>
+
+</mapper>
