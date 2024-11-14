@@ -17,8 +17,8 @@ public class ChatMessageService {
     private final ChatMessageRepository repository;
 
     @Async
-    public ChatMessage saveAsync(ChatMessage chatMessage) {
-        return repository.save(chatMessage);
+    public void saveAsync(ChatMessage chatMessage) {
+        repository.save(chatMessage);
     }
 
     public List<ChatMessage> getRecentMessages(Long chatRoomId, Date beforeTimestamp) {
