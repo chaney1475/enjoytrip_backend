@@ -18,7 +18,7 @@ public class ChatMessageListener {
     private final ChatMessageService chatMessageService;
     private final ObjectMapper objectMapper;
 
-    @KafkaListener(topics = "chatting-topic", groupId = "chat-group")
+    @KafkaListener(topics = "chatting-topic", groupId = "chat-group", containerFactory = "kafkaListenerContainerFactory")
     public void listen(String message) {
         try {
             // Kafka에서 수신한 메시지 로그 추가
