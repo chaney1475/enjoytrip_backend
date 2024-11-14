@@ -7,14 +7,12 @@ import com.enjoytrip.chatting.producer.ChatMessageProducer;
 import com.enjoytrip.chatting.service.ChatMessageService;
 import com.enjoytrip.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Date;
@@ -24,8 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ChatController {
-    private final JwtUtil jwtUtil;
-    private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageService chatMessageService;
     private final ChatMessageProducer chatMessageProducer;
 
@@ -41,6 +37,9 @@ public class ChatController {
         message.setChatRoomId(roomNumber);
         // 로그 추가
         System.out.println("Received WebSocket message: " + message);
+
+        // Redis에 메시지 임시 저장 (5분 후 만료 설정)
+        chatMessageService.saveMessageToBuffer(roomNumber, message);
 
         // 데이터베이스 저장
         chatMessageService.saveAsync(ChatMessage.from(message));
@@ -61,5 +60,12 @@ public class ChatController {
 
         return chatMessageService.getRecentMessages(chatRoomId, beforeTimestamp);
     }
+
+    @GetMapping("/chat/{roomNumber}/buffered-messages")
+    public List<ChatMessageDTO> getBufferedMessages(@PathVariable String roomNumber) {
+        return chatMessageService.getBufferedMessages(roomNumber);
+    }
+
+
 }
 
