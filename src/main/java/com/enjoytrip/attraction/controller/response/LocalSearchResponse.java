@@ -1,6 +1,5 @@
 package com.enjoytrip.attraction.controller.response;
 
-import com.enjoytrip.attraction.service.command.LocalSearchCommand;
 import com.enjoytrip.attraction.service.dto.LocalSearchDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

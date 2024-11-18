@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ParserJson {
 
-    private static ObjectMapper staticObjectMapper = new ObjectMapper();
+    private static final ObjectMapper staticObjectMapper = new ObjectMapper();
 
     static public List<OpenAISearchDto> parseOpenAISearchDto(String response) {
         List<OpenAISearchDto> attractions = new ArrayList<>();
