@@ -1,10 +1,10 @@
 package com.enjoytrip.attraction.controller;
 
+import com.enjoytrip.attraction.controller.request.LocalSearchRequest;
 import com.enjoytrip.attraction.controller.request.OpenAISearchRequest;
-import com.enjoytrip.attraction.controller.response.AreaResponse;
-import com.enjoytrip.attraction.controller.response.OpenAISearchResponse;
-import com.enjoytrip.attraction.controller.response.SigunguResponse;
+import com.enjoytrip.attraction.controller.response.*;
 import com.enjoytrip.attraction.service.SearchService;
+import com.enjoytrip.attraction.service.command.LocalSearchCommand;
 import com.enjoytrip.attraction.service.command.OpenAISearchCommand;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class SearchController {
     @PostMapping("/openai")
     public ResponseEntity<List<OpenAISearchResponse>> getAttractions(@RequestBody OpenAISearchRequest openAISearchRequest) {
         List<OpenAISearchResponse> attractions = searchService
-                .OpenAiSearchService(OpenAISearchCommand.from(openAISearchRequest))
+                .OpenAiSearch(OpenAISearchCommand.from(openAISearchRequest))
                 .stream().map(OpenAISearchResponse::from).toList();
 
         return ResponseEntity.ok(attractions);
@@ -35,7 +35,7 @@ public class SearchController {
 
     @PostMapping("/areas")
     public ResponseEntity<Mono<List<AreaResponse>>> getArea() {
-        Mono<List<AreaResponse>> areaResponse = searchService.getAreaService()
+        Mono<List<AreaResponse>> areaResponse = searchService.getArea()
                 .map(areaDto -> areaDto.stream()
                         .map(dto -> new AreaResponse(dto.getCode(), dto.getName()))
                         .collect(Collectors.toList()));
@@ -45,13 +45,22 @@ public class SearchController {
 
     @PostMapping("/sigungus")
     public ResponseEntity<Mono<List<SigunguResponse>>> getSigungu(@RequestBody String areaCode) {
-        System.out.println(areaCode);
-
-        Mono<List<SigunguResponse>> sigunguResponse = searchService.getSigunguService(areaCode)
+        Mono<List<SigunguResponse>> sigunguResponse = searchService.getSigungu(areaCode)
                 .map(sigunguDto -> sigunguDto.stream()
                         .map(dto -> new SigunguResponse(dto.getCode(), dto.getName()))
                         .collect(Collectors.toList()));
 
         return ResponseEntity.ok(sigunguResponse);
+    }
+
+    @PostMapping("/local")
+    public ResponseEntity<Mono<List<LocalSearchResponse>>> searchAttractionByLocal(@RequestBody LocalSearchRequest localSearchRequest) {
+        Mono<List<LocalSearchResponse>> localSearchResponse = searchService.getLocalSearch(LocalSearchCommand.from(localSearchRequest))
+                .map(localSearchDtos -> localSearchDtos
+                                .stream()
+                                .map(LocalSearchResponse::from)
+                        .collect(Collectors.toList()));
+
+        return ResponseEntity.ok(localSearchResponse);
     }
 }

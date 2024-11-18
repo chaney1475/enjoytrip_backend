@@ -49,7 +49,7 @@ public class AttractionController {
     @DeleteMapping("/{attractionId}")
     public ResponseEntity<String> deleteUserAttraction(@Parameter(hidden = true)@Authenticated AuthClaims claims, @PathVariable Long attractionId) {
 
-        attractionService.deleteUserAttraction(attractionId, claims.getUserId());
+        attractionService.deleteUserAttraction(claims.getUserId(), attractionId);
 
         return ResponseEntity.ok("관심목록에서 관광지 삭제 성공");
     }

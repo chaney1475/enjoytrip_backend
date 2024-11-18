@@ -1,9 +1,8 @@
 package com.enjoytrip.attraction.service;
 
+import com.enjoytrip.attraction.service.command.LocalSearchCommand;
 import com.enjoytrip.attraction.service.command.OpenAISearchCommand;
-import com.enjoytrip.attraction.service.dto.AreaDto;
-import com.enjoytrip.attraction.service.dto.OpenAISearchDto;
-import com.enjoytrip.attraction.service.dto.SigunguDto;
+import com.enjoytrip.attraction.service.dto.*;
 import com.enjoytrip.attraction.util.ParserJson;
 import com.enjoytrip.attraction.util.PromptTemplateLoader;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class SearchService {
     private final ChatModel chatModel;
     private final PromptTemplateLoader promptLoader;
 
-    public Mono<List<AreaDto>> getAreaService() {
+    public Mono<List<AreaDto>> getArea() {
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -49,7 +48,7 @@ public class SearchService {
                 .flatMap(ParserJson::parseAreaCodeDto);
     }
 
-    public Mono<List<SigunguDto>> getSigunguService(String areaCode) {
+    public Mono<List<SigunguDto>> getSigungu(String areaCode) {
 
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -69,7 +68,31 @@ public class SearchService {
                 .flatMap(ParserJson::parseSigunguDto);
     }
 
-    public List<OpenAISearchDto> OpenAiSearchService(OpenAISearchCommand openAISearchCommand) {
+    public Mono<List<LocalSearchDto>> getLocalSearch(LocalSearchCommand localSearchCommand) {
+
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
+                        .host("apis.data.go.kr")
+                        .path("/B551011/KorService1/areaBasedList1")
+                        .queryParam("serviceKey", API_KEY_DATA)
+                        .queryParam("numOfRows", "100")
+                        .queryParam("pageNo", "1")
+                        .queryParam("MobileOS", "ETC")
+                        .queryParam("MobileApp", "AppTest")
+                        .queryParam("listYN", "Y")
+                        .queryParam("arrange", "A")
+                        .queryParam("contentTypeId", localSearchCommand.getContentTypeId())
+                        .queryParam("areaCode", localSearchCommand.getAreaCode())
+                        .queryParam("sigunguCode", localSearchCommand.getSigunguCode())
+                        .queryParam("_type", "json")
+                        .build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .flatMap(json -> ParserJson.parseLocalSearchDto(json, localSearchCommand.getKeyword()));
+    }
+
+    public List<OpenAISearchDto> OpenAiSearch(OpenAISearchCommand openAISearchCommand) {
         // 유저 프롬프트 템플릿 로드 및 변수 설정
         String userPromptTemplate = promptLoader.loadUserPrompt();
         PromptTemplate userTemplate = new PromptTemplate(userPromptTemplate);

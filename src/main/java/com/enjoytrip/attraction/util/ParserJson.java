@@ -1,9 +1,7 @@
 package com.enjoytrip.attraction.util;
 
 import com.enjoytrip.attraction.exception.AttractionException;
-import com.enjoytrip.attraction.service.dto.AreaDto;
-import com.enjoytrip.attraction.service.dto.OpenAISearchDto;
-import com.enjoytrip.attraction.service.dto.SigunguDto;
+import com.enjoytrip.attraction.service.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -88,6 +86,42 @@ public class ParserJson {
                 sigungus.add(new SigunguDto(code, name));
             }
             return Mono.just(sigungus);
+        }
+
+        return Mono.empty();
+    }
+
+    public static Mono<List<LocalSearchDto>> parseLocalSearchDto(String response, String keyword) {
+        List<LocalSearchDto> localSearchDtos = new ArrayList<>();
+        JsonNode rootNode = null;
+
+        try {
+            rootNode = staticObjectMapper.readTree(response);
+        } catch (JsonProcessingException e) {
+            throw new AttractionException("LOCAL_SEARCH_READ_FAILED", "지역 기반 검색 정보 반환 결과 읽기 실패", "지역 기반 검색 반환 결과 읽기에 실패하였습니다.");
+        }
+
+        JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
+
+        if (itemsNode.isArray()) {
+            for (JsonNode itemNode : itemsNode) {
+                if (keyword != null && !keyword.trim().isEmpty() && !itemNode.path("title").asText().contains(keyword))
+                    continue;
+
+                LocalSearchDto localSearchDto = new LocalSearchDto();
+                localSearchDto.setAddress(itemNode.has("addr1") ? itemNode.get("addr1").asText() : "");
+                localSearchDto.setContentId(itemNode.has("contentid") ? itemNode.get("contentid").asText() : "");
+                localSearchDto.setFirstImage(itemNode.has("firstimage") ? itemNode.get("firstimage").asText() : "");
+                localSearchDto.setMapX(itemNode.has("mapx") ? new BigDecimal(itemNode.get("mapx").asText()) : null);
+                localSearchDto.setMapY(itemNode.has("mapy") ? new BigDecimal(itemNode.get("mapy").asText()) : null);
+                localSearchDto.setTel(itemNode.has("tel") ? itemNode.get("tel").asText() : "");
+                localSearchDto.setTitle(itemNode.has("title") ? itemNode.get("title").asText() : "");
+                localSearchDto.setAreaCode(itemNode.has("areacode") ? itemNode.get("areacode").asText() : "");
+                localSearchDto.setSigunguCode(itemNode.has("sigungucode") ? itemNode.get("sigungucode").asText() : "");
+                localSearchDtos.add(localSearchDto);
+            }
+
+            return Mono.just(localSearchDtos);
         }
 
         return Mono.empty();
