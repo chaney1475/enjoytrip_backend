@@ -23,7 +23,7 @@ spring:
   # spring ai 설정
   ai:
     openai:
-      api-key: sk-proj-qSWEo2OZjZ8l5Jja6vCNT3BlbkFJpDTLHvHATkC2s2d2kyZD
+      api-key: ${API_KEY_OPEN_AI}
       chat:
         options:
           model: gpt-4o
@@ -65,6 +65,10 @@ mybatis:
   mapper-locations: classpath:mappers/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+API_KEY:
+  DATA: ${API_KEY_DATA}
+  MAP: ${API_KEY_KAKAO_MAP}
 
 #logging:
 #  level:
