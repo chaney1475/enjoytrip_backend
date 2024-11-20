@@ -1,9 +1,11 @@
 package com.enjoytrip.attraction.controller;
 
 import com.enjoytrip.attraction.controller.request.AttractionCreateRequest;
+import com.enjoytrip.attraction.controller.response.AttractionRankingResponse;
 import com.enjoytrip.attraction.controller.response.AttractionResponse;
-import com.enjoytrip.attraction.controller.response.TopNthAttractionResponse;
+import com.enjoytrip.attraction.controller.response.TopNthCityResponse;
 import com.enjoytrip.attraction.service.AttractionService;
+import com.enjoytrip.attraction.service.RankingService;
 import com.enjoytrip.attraction.service.command.AttractionCreateCommand;
 import com.enjoytrip.auth.annotation.Authenticated;
 import com.enjoytrip.auth.annotation.LoginRequired;
@@ -17,11 +19,12 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/attractions")
+@RequestMapping("/api/v1/attractions")
 @RequiredArgsConstructor
 public class AttractionController {
 
     private final AttractionService attractionService;
+    private final RankingService rankingService;
 
     @LoginRequired
     @PostMapping
@@ -54,13 +57,23 @@ public class AttractionController {
         return ResponseEntity.ok("관심목록에서 관광지 삭제 성공");
     }
 
-    @GetMapping("/top")
-    public ResponseEntity<List<TopNthAttractionResponse>> getTopNthAttractions() {
+    @GetMapping("/top/cities")
+    public ResponseEntity<List<TopNthCityResponse>> getTopNthCities() {
 
-        List<TopNthAttractionResponse> topNthAttractionResponses =
-                attractionService.getTopNthAttractions()
-                        .stream().map(TopNthAttractionResponse::from).toList();
+        List<TopNthCityResponse> topNthCityResponse =
+                attractionService.getTopNthCities()
+                        .stream().map(TopNthCityResponse::from).toList();
 
-        return ResponseEntity.ok(topNthAttractionResponses);
+        return ResponseEntity.ok(topNthCityResponse);
+    }
+
+    @GetMapping("/top/attractions")
+    public ResponseEntity<List<AttractionRankingResponse>> getAttractionRanking() {
+
+        List<AttractionRankingResponse> attractionRankingResponses =
+                rankingService.get("weekly:popular")
+                        .stream().map(AttractionRankingResponse::from).toList();
+
+        return ResponseEntity.ok(attractionRankingResponses);
     }
 }

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/attractions/search")
+@RequestMapping("/api/v1/attractions/search")
 public class SearchController {
 
     private SearchService searchService;

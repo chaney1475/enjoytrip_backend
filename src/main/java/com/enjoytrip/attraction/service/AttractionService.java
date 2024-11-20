@@ -7,7 +7,7 @@ import com.enjoytrip.attraction.mapper.UserAttractionMapper;
 import com.enjoytrip.attraction.mapper.LocalMapper;
 import com.enjoytrip.attraction.service.command.AttractionCreateCommand;
 import com.enjoytrip.attraction.service.dto.AttractionDto;
-import com.enjoytrip.attraction.service.dto.TopNthAttractionDto;
+import com.enjoytrip.attraction.service.dto.TopNthCityDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,9 +86,9 @@ public class AttractionService {
     }
 
     @Transactional
-    public List<TopNthAttractionDto> getTopNthAttractions() {
+    public List<TopNthCityDto> getTopNthCities() {
 
-        return userAttractionMapper.findTopNth(TOP_N)
-                .stream().map(TopNthAttractionDto::from).toList();
+        return userAttractionMapper.findTopNthCities(TOP_N)
+                .stream().map(TopNthCityDto::from).toList();
     }
 }
