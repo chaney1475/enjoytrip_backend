@@ -13,6 +13,6 @@ import java.util.Date;
 public class GroupCreateRequest {
     private String title;
     private String description;
-    //    private Long attractionId;
+    private Long attractionId;
     private Integer maxParticipant;
 }

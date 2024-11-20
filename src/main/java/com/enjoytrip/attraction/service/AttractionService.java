@@ -9,13 +9,14 @@ import com.enjoytrip.attraction.service.command.AttractionCreateCommand;
 import com.enjoytrip.attraction.service.dto.AttractionDto;
 import com.enjoytrip.attraction.service.dto.TopNthCityDto;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AttractionService {
 
     private final int TOP_N = 10;
@@ -26,14 +27,13 @@ public class AttractionService {
 
     @Transactional
     public AttractionDto insertAttraction(AttractionCreateCommand command) {
-
         Attraction attraction = Attraction.from(command);
         Long attractionId = null;
         int result = 0;
 
         /**
          * 1. areacode와 sigungucode를 이용해 시군구 이름을 가져온다.
-          */
+         */
         String sigunguName = localMapper.findSigunguNameByAreaCodeAndSigunguCode(command.getAreaCode(), command.getSigunguCode());
 
         if(sigunguName == null) {

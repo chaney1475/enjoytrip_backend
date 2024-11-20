@@ -1,8 +1,9 @@
 package com.enjoytrip.attraction.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface LocalMapper {
-    String findSigunguNameByAreaCodeAndSigunguCode(String areaCode, String sigunguCode);
+    String findSigunguNameByAreaCodeAndSigunguCode(@Param("areaCode") String areaCode, @Param("sigunguCode") String sigunguCode);
 }

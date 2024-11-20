@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="insertGroup" parameterType="com.enjoytrip.group.domain.Group">
-        INSERT INTO `groups` (title, description, creator_id, created_at, max_participants)
-        VALUES (#{title}, #{description}, #{creator.userId}, #{createdAt}, #{maxParticipant});
+        INSERT INTO `groups` (title, description, creator_id, attraction_id, created_at, max_participants)
+        VALUES (#{title}, #{description}, #{creator.userId},#{attraction_id}, #{createdAt}, #{maxParticipant});
         <selectKey resultType="Long" keyProperty="groupId" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
