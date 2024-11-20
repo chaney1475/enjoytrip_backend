@@ -11,6 +11,7 @@ import lombok.Setter;
 public class GroupCreateCommand {
     private String title;
     private String description;
+    private Long attractionId;
     private Long creator;
     private Integer maxParticipant;
 
@@ -18,6 +19,7 @@ public class GroupCreateCommand {
         return new GroupCreateCommand(
                 request.getTitle(),
                 request.getDescription(),
+                request.getAttractionId(),
                 userId,
                 request.getMaxParticipant()
         );

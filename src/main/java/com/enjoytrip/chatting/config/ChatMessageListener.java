@@ -1,8 +1,6 @@
 package com.enjoytrip.chatting.config;
 
-import com.enjoytrip.chatting.domain.ChatMessage;
 import com.enjoytrip.chatting.dto.ChatMessageDTO;
-import com.enjoytrip.chatting.repository.ChatMessageRepository;
 import com.enjoytrip.chatting.service.ChatMessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
@@ -17,6 +18,7 @@ public class AttractionCreateRequest {
     private BigDecimal mapY;
     private String tel;
     private String title;
+    @NotNull
     private String areaCode;
     private String sigunguCode;
 }
