@@ -10,6 +10,7 @@ import com.enjoytrip.group.service.GroupService;
 import com.enjoytrip.group.service.command.GroupCreateCommand;
 import com.enjoytrip.group.service.command.UserJoinGroupCommand;
 import com.enjoytrip.group.service.dto.GroupDTO;
+
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,9 @@ public class GroupController {
 
     // 그룹 아이디로 그룹 단건 조회
     @GetMapping("/{groupId}")
-    public ResponseEntity<GroupResponse> getGroup(@PathVariable Long groupId) {
+    public ResponseEntity<GroupResponse> getGroup(
+            @Parameter(description = "groupId 로 그룹 조회하기", example = "123")
+            @PathVariable Long groupId) {
         GroupResponse group = GroupResponse.from(groupService.getGroup(groupId));
         return ResponseEntity.ok(group);
     }

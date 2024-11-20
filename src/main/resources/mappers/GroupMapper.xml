@@ -16,32 +16,50 @@
             <result property="email" column="creator_email"/>
             <result property="avatarUrl" column="creator_url"/>
         </association>
+        <association property="attraction" javaType="com.enjoytrip.attraction.domain.Attraction">
+            <id property="attractionId" column="attraction_id"/>
+            <result property="address" column="attraction_address"/>
+            <result property="contentId" column="attraction_content_id"/>
+            <result property="firstImage" column="attraction_first_image"/>
+            <result property="mapX" column="attraction_map_x"/>
+            <result property="mapY" column="attraction_map_y"/>
+            <result property="tel" column="attraction_tel"/>
+            <result property="title" column="attraction_title"/>
+            <result property="sigunguName" column="attraction_sigungu_name"/>
+        </association>
     </resultMap>
 
     <insert id="insertGroup" parameterType="com.enjoytrip.group.domain.Group">
         INSERT INTO `groups` (title, description, creator_id, attraction_id, created_at, max_participants)
-        VALUES (#{title}, #{description}, #{creator.userId},#{attraction_id}, #{createdAt}, #{maxParticipant});
+        VALUES (#{title}, #{description}, #{creator.userId}, #{attraction.attractionId}, #{createdAt}, #{maxParticipant});
         <selectKey resultType="Long" keyProperty="groupId" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
     <select id="findByGroupId" parameterType="Long" resultMap="GroupWithCreatorResult">
-        SELECT g.group_id, g.title, g.description, g.creator_id, g.created_at, g.max_participants,
-               u.user_id AS creator_id, u.nickname AS creator_name, u.email AS creator_email, u.avatar_url AS creator_url
+        SELECT
+            g.group_id, g.title, g.description, g.creator_id, g.created_at, g.max_participants, g.attraction_id,
+            u.user_id AS creator_id, u.nickname AS creator_name, u.email AS creator_email, u.avatar_url AS creator_url,
+            a.attraction_id AS attraction_id, a.address AS attraction_address, a.content_id AS attraction_content_id,
+            a.first_image AS attraction_first_image, a.map_x AS attraction_map_x, a.map_y AS attraction_map_y,
+            a.tel AS attraction_tel, a.title AS attraction_title, a.sigungu_name AS attraction_sigungu_name
         FROM `groups` g
                  INNER JOIN `user` u ON g.creator_id = u.user_id
+                 LEFT JOIN `attractions` a ON g.attraction_id = a.attraction_id
         WHERE g.group_id = #{groupId}
     </select>
 
-    <!-- 전체 그룹 목록 조회 -->
     <select id="selectAllGroups" resultMap="GroupWithCreatorResult">
-        SELECT g.group_id, g.title, g.description, g.creator_id, g.created_at, g.max_participants,
-               u.user_id AS creator_id, u.nickname AS creator_name, u.email AS creator_email, u.avatar_url AS creator_url
+        SELECT
+            g.group_id, g.title, g.description, g.creator_id, g.created_at, g.max_participants, g.attraction_id,
+            u.user_id AS creator_id, u.nickname AS creator_name, u.email AS creator_email, u.avatar_url AS creator_url,
+            a.attraction_id AS attraction_id, a.address AS attraction_address, a.content_id AS attraction_content_id,
+            a.first_image AS attraction_first_image, a.map_x AS attraction_map_x, a.map_y AS attraction_map_y,
+            a.tel AS attraction_tel, a.title AS attraction_title, a.sigungu_name AS attraction_sigungu_name
         FROM `groups` g
                  INNER JOIN `user` u ON g.creator_id = u.user_id
+                 LEFT JOIN `attractions` a ON g.attraction_id = a.attraction_id
     </select>
-
-
 
 </mapper>

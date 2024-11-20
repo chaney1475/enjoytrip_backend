@@ -1,5 +1,6 @@
 package com.enjoytrip.group.service.dto;
 
+import com.enjoytrip.attraction.service.dto.AttractionDto;
 import com.enjoytrip.group.domain.Group;
 import com.enjoytrip.user.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class GroupDTO {
     private Long groupId;
     private String title;
     private String description;
-    //    private Attraction attraction;
+    private AttractionDto attraction;
     private UserDTO creator;
     private LocalDateTime createdAt;
     private Integer maxParticipant;
@@ -26,6 +27,7 @@ public class GroupDTO {
                 group.getGroupId(),
                 group.getTitle(),
                 group.getDescription(),
+                AttractionDto.from(group.getAttraction()),
                 UserDTO.from(group.getCreator()),
                 group.getCreatedAt(),
                 group.getMaxParticipant()
