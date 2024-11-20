@@ -13,11 +13,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OpenAISearchDto {
     private String address;
+    private String contentId;
     private String firstImage;
     private BigDecimal mapX;
     private BigDecimal mapY;
     private String tel;
     private String title;
-    private String sigunguName;
+    private String areaCode;
+    private String sigunguCode;
     private String reason; // 추가 필드
 }

@@ -14,23 +14,27 @@ import java.math.BigDecimal;
 @Builder
 public class OpenAISearchResponse {
     private String address;
+    private String contentId;
     private String firstImage;
     private BigDecimal mapX;
     private BigDecimal mapY;
     private String tel;
     private String title;
-    private String sigunguName;
+    private String areaCode;
+    private String sigunguCode;
     private String reason;
 
     public static OpenAISearchResponse from(OpenAISearchDto openAISearchDto) {
         return new OpenAISearchResponse(
                 openAISearchDto.getAddress(),
+                openAISearchDto.getContentId(),
                 openAISearchDto.getFirstImage(),
                 openAISearchDto.getMapX(),
                 openAISearchDto.getMapY(),
                 openAISearchDto.getTel(),
                 openAISearchDto.getTitle(),
-                openAISearchDto.getSigunguName(),
+                openAISearchDto.getAreaCode(),
+                openAISearchDto.getSigunguCode(),
                 openAISearchDto.getReason()
         );
     }

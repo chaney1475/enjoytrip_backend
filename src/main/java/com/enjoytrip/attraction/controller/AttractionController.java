@@ -30,6 +30,8 @@ public class AttractionController {
     @PostMapping
     public ResponseEntity<AttractionResponse> createAttraction(@Parameter(hidden = true) @Authenticated AuthClaims claims, @RequestBody AttractionCreateRequest attractionRequest) {
 
+        System.out.println(attractionRequest.toString());
+
         AttractionResponse attractionResponse = AttractionResponse.from(
                 attractionService.insertAttraction(AttractionCreateCommand.from(claims.getUserId(), attractionRequest))
         );
