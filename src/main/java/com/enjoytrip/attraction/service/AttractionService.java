@@ -29,7 +29,7 @@ public class AttractionService {
 
         Attraction attraction = Attraction.from(command);
         Long attractionId = null;
-        int result = 0;
+        int result = 1;
 
         /**
          * 1. areacode와 sigungucode를 이용해 시군구 이름을 가져온다.
@@ -47,14 +47,26 @@ public class AttractionService {
          * 1. contentId가 null : openAI를 이용한 검색
          * 2. contentId를 가진 레코드가 존재하지 않는 경우
          */
-        if(attraction.getContentId() == null || (attractionId = attractionMapper.findAttractionIdByContentId(attraction.getContentId())) == null) {
+
+        //ai인 경우
+        if(attraction.getContentId().isEmpty()) {
             result = attractionMapper.insertAttraction(attraction);
-            if(result == 0) {
-                throw new AttractionException("ATTRACTION_INSERT_FAILED", "관광지 정보 삽입 실패", "관광지 정보를 삽입에 실패하였습니다.");
+        }else{
+            //기본 검색
+            attractionId = attractionMapper.findAttractionIdByContentId(attraction.getContentId());
+
+            if (attractionId == null) {
+                result = attractionMapper.insertAttraction(attraction);
+            }else{
+                attraction.setAttractionId(attractionId);
             }
-        } else {
-            attraction.setAttractionId(attractionId);
         }
+
+        if(result == 0) {
+            throw new AttractionException("ATTRACTION_INSERT_FAILED", "관광지 정보 삽입 실패", "관광지 정보를 삽입에 실패하였습니다.");
+        }
+
+        System.out.println(attraction.getAttractionId());
 
         if(userAttractionMapper.findByUserIdAndAttractionId(command.getUserId(), attraction.getAttractionId()).isPresent()) {
             throw new AttractionException("USER_ATTRACTION_ALREADY_EXIST", "관심목록에 관광지가 이미 존재", "관심목록에 관광지가 이미 존재합니다.");
@@ -67,6 +79,7 @@ public class AttractionService {
 
         return AttractionDto.from(attraction);
     }
+
 
     @Transactional
     public List<AttractionDto> getUserAttractions(Long userId) {

@@ -30,12 +30,14 @@ public class ParserJson {
         for (JsonNode node : attractionsNode) {
             OpenAISearchDto openAISearchDto = new OpenAISearchDto();
             openAISearchDto.setAddress(node.path("address").asText());
+            openAISearchDto.setContentId(node.path("contentId").asText());
             openAISearchDto.setFirstImage(node.path("firstImage").asText());
             openAISearchDto.setMapX(new BigDecimal(node.path("mapX").asText()));
             openAISearchDto.setMapY(new BigDecimal(node.path("mapY").asText()));
             openAISearchDto.setTel(node.path("tel").asText());
             openAISearchDto.setTitle(node.path("title").asText());
-            openAISearchDto.setSigunguName(node.path("sigunguName").asText());
+            openAISearchDto.setAreaCode(node.path("areaCode").asText());
+            openAISearchDto.setSigunguCode(node.path("sigunguCode").asText());
             openAISearchDto.setReason(node.path("reason").asText());
             attractions.add(openAISearchDto);
         }
