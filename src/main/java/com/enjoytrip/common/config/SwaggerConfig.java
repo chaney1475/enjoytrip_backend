@@ -34,8 +34,8 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("HowRead API 명세서")
-                .description("HowRead 프로젝트에 사용되는 API 명세서")
+                .title("EnjoyTrip API 명세서")
+                .description("EnjoyTrip 프로젝트에 사용되는 API 명세서")
                 .version("v1");
     }
 }
