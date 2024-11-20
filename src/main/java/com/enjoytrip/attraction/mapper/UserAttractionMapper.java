@@ -1,7 +1,7 @@
 package com.enjoytrip.attraction.mapper;
 
 import com.enjoytrip.attraction.domain.Attraction;
-import com.enjoytrip.attraction.domain.TopNthAttraction;
+import com.enjoytrip.attraction.domain.TopNthCity;
 import com.enjoytrip.attraction.domain.UserAttraction;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +23,7 @@ public interface UserAttractionMapper {
     int deleteByUserIdAndAttractionId(Long userId, Long attractionId);
 
     // Top10 지역 가져오기
-    List<TopNthAttraction> findTopNth(int topNth);
+    List<TopNthCity> findTopNthCities(int topNth);
+
+    List<Integer> findTop5Attractions();
 }

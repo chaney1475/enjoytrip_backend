@@ -31,7 +31,7 @@
         AND attraction_id = #{attractionId}
     </delete>
 
-    <select id="findTopNth" parameterType="Int" resultType="com.enjoytrip.attraction.domain.TopNthAttraction">
+    <select id="findTopNthCities" parameterType="Int" resultType="com.enjoytrip.attraction.domain.TopNthCity">
         SELECT ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) AS ranking, sigungu_name, COUNT(*) AS count
         FROM user_attraction
         GROUP BY sigungu_name
@@ -39,4 +39,12 @@
         LIMIT #{TOP_N}
     </select>
 
+    <!-- 상위 5개의 attraction_id 조회 -->
+    <select id="findTop5Attractions" resultType="Int">
+        SELECT attraction_id
+        FROM user_attraction
+        GROUP BY attraction_id
+        ORDER BY COUNT(*) DESC
+        LIMIT 5
+    </select>
 </mapper>
