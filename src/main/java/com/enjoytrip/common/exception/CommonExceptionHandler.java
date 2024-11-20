@@ -46,15 +46,6 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(TokenException.class)
-    public ResponseEntity<ExceptionResponse> handleTokenException(TokenException e) {
-        log.error("errorMessage: {}", e.getMessage());
-
-        ExceptionResponse exception = new ExceptionResponse(e.getCode(), e.getTitle(), e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception);
-    }
-
-    @ExceptionHandler(TokenException.class)
     public ResponseEntity<ExceptionResponse> handleUnauthorizedException(TokenException e) {
         log.error("errorMessage: {}", e.getMessage());
 
