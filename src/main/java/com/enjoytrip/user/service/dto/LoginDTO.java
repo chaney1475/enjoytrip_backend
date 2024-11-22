@@ -9,7 +9,7 @@ public class LoginDTO {
     private String token;
     private Long userId;
     private String nickname;
-    private String profileUrl;
+    private String avatarUrl;
 
     static public LoginDTO from(String token, UserDTO userDto) {
         return new LoginDTO(

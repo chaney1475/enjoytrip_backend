@@ -10,14 +10,14 @@ public class LoginResponse {
     private String token;
     private Long userId;
     private String nickname;
-    private String profileUrl;
+    private String avatarUrl;
 
     static public LoginResponse from(LoginDTO dto) {
         return new LoginResponse(
                 dto.getToken(),
                 dto.getUserId(),
                 dto.getNickname(),
-                dto.getProfileUrl()
+                dto.getAvatarUrl()
         );
     }
 }
