@@ -99,8 +99,7 @@ public class UserService {
         User user = userMapper.findById(command.getUserId())
                 .orElseThrow(() -> new NotFoundException("사용자 정보 수정 실패", "해당 유저가 존재하지 않습니다."));
 
-        Image image = imageRepository.findById(command.getAvatarImageId());
-
+        Image image = imageRepository.findById(command.getAvatarUrlId());
 
         user.update(command.getNickname(), image.getUrl());
         userMapper.updateUser(user);

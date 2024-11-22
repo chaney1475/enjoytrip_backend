@@ -27,8 +27,7 @@ public class ImageService {
 
         // 이미지 엔티티 저장 및 id 자동 생성
         Image newImage = new Image(imageUrl);
-        Long imageId = imageRepository.save(newImage);
-        newImage.setId(imageId);
+        imageRepository.save(newImage);
 
         // DTO 변환
         return ImageDto.from(newImage);
