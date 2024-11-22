@@ -3,8 +3,6 @@ package com.enjoytrip.image.mapper;
 import com.enjoytrip.image.domain.Image;
 import org.apache.ibatis.annotations.*;
 
-import java.util.List;
-
 @Mapper
 public interface ImageMapper {
 
