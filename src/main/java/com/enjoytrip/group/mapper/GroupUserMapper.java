@@ -21,4 +21,6 @@ public interface GroupUserMapper {
 
     // 특정 그룹에 참여한 사용자 수 조회
     int countUsersInGroup(@Param("groupId") Long groupId);
+
+    int deleteGroupUser(@Param("userId")Long userId, @Param("groupId") Long groupId);
 }

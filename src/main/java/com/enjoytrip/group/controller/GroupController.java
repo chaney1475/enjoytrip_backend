@@ -6,21 +6,19 @@ import com.enjoytrip.auth.domain.AuthClaims;
 import com.enjoytrip.common.schema.PagedResponse;
 import com.enjoytrip.group.controller.request.GroupCreateRequest;
 import com.enjoytrip.group.controller.response.GroupResponse;
-import com.enjoytrip.group.domain.Group;
 import com.enjoytrip.group.service.GroupService;
 import com.enjoytrip.group.service.command.GroupCreateCommand;
 import com.enjoytrip.group.service.command.UserJoinGroupCommand;
+import com.enjoytrip.group.service.command.UserLeaveGroupCommand;
 import com.enjoytrip.group.service.dto.GroupDTO;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/groups")
@@ -93,4 +91,17 @@ public class GroupController {
         List<GroupResponse> response = groups.stream().map(GroupResponse::from).toList();
         return ResponseEntity.ok(response);
     }
+
+    @LoginRequired
+    @DeleteMapping("/{groupId}/leave")
+    public ResponseEntity<String> leaveGroup(
+            @Authenticated AuthClaims claims,
+            @PathVariable Long groupId) {
+
+        groupService.leaveGroup(UserLeaveGroupCommand.from(claims.getUserId(), groupId));
+
+        return ResponseEntity.ok("그룹 탈퇴 성공");
+    }
+
+
 }

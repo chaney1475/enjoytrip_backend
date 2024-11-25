@@ -7,10 +7,9 @@ import com.enjoytrip.group.mapper.GroupMapper;
 import com.enjoytrip.group.mapper.GroupUserMapper;
 import com.enjoytrip.group.service.command.GroupCreateCommand;
 import com.enjoytrip.group.service.command.UserJoinGroupCommand;
+import com.enjoytrip.group.service.command.UserLeaveGroupCommand;
 import com.enjoytrip.group.service.dto.GroupDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,4 +113,17 @@ public class GroupService {
                 .map(GroupDTO::from)
                 .toList();
     }
+
+    @Transactional
+    public void leaveGroup(UserLeaveGroupCommand command) {
+        int result = groupUserMapper.deleteGroupUser(command.getUserId(), command.getGroupId());
+        if (result == 0) {
+            throw new GroupException(
+                    "GROUP_LEAVE_FAILED",
+                    "그룹 탈퇴 실패",
+                    "그룹 탈퇴에 실패하였습니다. 그룹에 가입하지 않았거나 잘못된 요청입니다."
+            );
+        }
+    }
+
 }
