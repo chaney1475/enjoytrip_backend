@@ -55,6 +55,16 @@ public class UserService {
         return UserDTO.from(newUser);
     }
 
+    @Transactional
+    public void deleteUser(Long userId) {
+        // 사용자 존재 여부 확인
+        User user = userMapper.findById(userId)
+                .orElseThrow(() -> new NotFoundException("회원 탈퇴 실패", "해당 유저가 존재하지 않습니다."));
+
+        // 사용자 삭제
+        userMapper.deleteUser(userId);
+    }
+
     @Transactional(readOnly = true)
     public UserDTO getUserById(Long userId) {
         User user = userMapper.findById(userId)
