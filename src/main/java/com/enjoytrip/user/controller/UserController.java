@@ -50,6 +50,14 @@ public class UserController {
         return ResponseEntity.ok(UserResponse.fromDto(user));
     }
 
+    @LoginRequired
+    @DeleteMapping("/me")
+    @Operation(summary = "회원 탈퇴", description = "현재 사용자의 계정을 완전히 삭제합니다.")
+    public ResponseEntity<String> deleteMe(@Parameter(hidden = true) @Authenticated AuthClaims authClaims) {
+        userService.deleteUser(authClaims.getUserId());
+        return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
+    }
+
     // 로그아웃 엔드포인트
 //    @PostMapping("/logout")
 //    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {

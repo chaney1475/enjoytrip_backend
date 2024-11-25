@@ -22,4 +22,6 @@ public interface UserMapper {
 
     // 사용자 업데이트
     void updateUser(User user);
+
+    void deleteUser(Long userId);
 }
