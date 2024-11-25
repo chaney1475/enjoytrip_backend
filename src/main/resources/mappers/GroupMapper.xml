@@ -62,4 +62,23 @@
                  LEFT JOIN `attractions` a ON g.attraction_id = a.attraction_id
     </select>
 
+    <select id="selectAllGroupsWithPagination" resultMap="GroupWithCreatorResult" parameterType="map">
+        SELECT
+            g.group_id, g.title, g.description, g.creator_id, g.created_at, g.max_participants, g.attraction_id,
+            u.user_id AS creator_id, u.nickname AS creator_name, u.email AS creator_email, u.avatar_url AS creator_url,
+            a.attraction_id AS attraction_id, a.address AS attraction_address, a.content_id AS attraction_content_id,
+            a.first_image AS attraction_first_image, a.map_x AS attraction_map_x, a.map_y AS attraction_map_y,
+            a.tel AS attraction_tel, a.title AS attraction_title, a.sigungu_name AS attraction_sigungu_name
+        FROM `groups` g
+                 INNER JOIN `user` u ON g.creator_id = u.user_id
+                 LEFT JOIN `attractions` a ON g.attraction_id = a.attraction_id
+        ORDER BY g.created_at DESC
+        LIMIT #{limit} OFFSET #{offset};
+    </select>
+
+    <select id="getTotalGroupsCount" resultType="int">
+        SELECT COUNT(*)
+        FROM `groups`
+    </select>
+
 </mapper>
