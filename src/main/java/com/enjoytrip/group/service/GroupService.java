@@ -1,5 +1,6 @@
 package com.enjoytrip.group.service;
 
+import com.enjoytrip.common.schema.PagedResponse;
 import com.enjoytrip.group.exception.GroupException;
 import com.enjoytrip.group.domain.Group;
 import com.enjoytrip.group.mapper.GroupMapper;
@@ -8,6 +9,8 @@ import com.enjoytrip.group.service.command.GroupCreateCommand;
 import com.enjoytrip.group.service.command.UserJoinGroupCommand;
 import com.enjoytrip.group.service.dto.GroupDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,9 +47,39 @@ public class GroupService {
 
     // 유저가 참여한 그룹 목록을 조회하는 메서드
     @Transactional
-    public List<Group> getUserGroups(Long userId) {
-        return groupUserMapper.findGroupsByUserId(userId);
+    public List<GroupDTO> getUserGroups(Long userId) {
+        List<Group> groups = groupUserMapper.findGroupsByUserId(userId);
+        return groups.stream()
+                .map(GroupDTO::from)
+                .toList(); // Group -> GroupDTO 변환
     }
+
+    // 페이징 처리된 그룹 목록 조회
+//    public List<GroupDTO> getGroupsWithPagination(int page, int size) {
+//        int offset = page * size; // 시작 위치 계산
+//        List<Group> groups = groupMapper.selectAllGroupsWithPagination(size, offset);
+//        return groups.stream()
+//                .map(GroupDTO::from)
+//                .toList(); // Group -> GroupDTO 변환
+//    }
+
+    public PagedResponse<GroupDTO> getGroupsWithPagination(int page, int size) {
+        int offset = page * size; // OFFSET 계산
+        List<Group> groups = groupMapper.selectAllGroupsWithPagination(size, offset); // 데이터 조회
+        int totalElements = groupMapper.getTotalGroupsCount(); // 전체 데이터 개수 조회
+        int totalPages = (int) Math.ceil((double) totalElements / size); // 총 페이지 수 계산
+
+        return new PagedResponse<>(
+                groups.stream()
+                .map(GroupDTO::from)
+                .toList(),
+                totalPages,
+                totalElements,
+                page,
+                size
+        );
+    }
+
 
     // 아아디로 그룹 단건 조회
     @Transactional
