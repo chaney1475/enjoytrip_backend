@@ -39,12 +39,12 @@
         LIMIT #{TOP_N}
     </select>
 
-    <!-- 상위 5개의 attraction_id 조회 -->
+    <!-- 상위 7개의 attraction_id 조회 -->
     <select id="findTop5Attractions" resultType="Int">
         SELECT attraction_id
         FROM user_attraction
         GROUP BY attraction_id
         ORDER BY COUNT(*) DESC
-        LIMIT 5
+        LIMIT 7
     </select>
 </mapper>

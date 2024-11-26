@@ -64,4 +64,12 @@
         WHERE group_id = #{groupId}
     </select>
 
+    <!-- 특정 그룹에 참여한 특정 참가자 탈퇴 처리 -->
+    <delete id="deleteGroupUser" parameterType="map">
+        DELETE
+        FROM group_user
+        WHERE user_id = #{userId}
+        AND group_id = #{groupId}
+    </delete>
+
 </mapper>
