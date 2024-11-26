@@ -37,11 +37,9 @@ public class GroupService {
 
     // 유저가 그룹에 참여하는 메서드
     @Transactional
-    public void joinGroup(UserJoinGroupCommand command) {
-        int result = groupUserMapper.insertGroupUser(command.getUserId(), command.getGroupId());
-
-        // 그룹 정보 조회
-        Group group = groupMapper.findByGroupId(command.getGroupId())
+        public void joinGroup(UserJoinGroupCommand command) {
+            // 그룹 정보 조회
+            Group group = groupMapper.findByGroupId(command.getGroupId())
                 .orElseThrow(() -> new GroupException("GROUP_NOT_FOUND", "그룹 없음", "해당 그룹을 찾을 수 없습니다."));
 
         // 현재 그룹의 참여자 수 조회
@@ -53,6 +51,8 @@ public class GroupService {
                     String.format("해당 그룹은 최대 인원(%d명)을 초과하였습니다.", group.getMaxParticipant())
             );
         }
+
+        int result = groupUserMapper.insertGroupUser(command.getUserId(), command.getGroupId());
 
         if (result == 0){
             throw new GroupException("GROUP_JOIN_FAILED", "그룹 가입 실패", "그룹 가입에 실패하였습니다.");
